@@ -1,0 +1,50 @@
+1. makdir foldet
+2. cd folder
+3. npm init -y
+4. package.json >>> <!-- scripts": {
+    "start": "node index.js",
+    ... -->
+5. create index.js
+6. npm install express cors
+7. .gitignore >> node_modules
+8. index.js >>> 
+
+    const cors = require('cors')
+    const port = process.env.PORT || 5000;
+
+    // middleware
+    app.use(cors());
+    app.use(express.json());
+
+    app.post('/users', (req, res) => {
+        console.log('post hhitting');
+        console.log(req.body);
+        const newUser = req.body;
+        newUser.id = users.length + 1;
+        users.push(newUser);
+        res.send(newUser)
+    })
+
+9. app.jsx >>>  
+    const handleUserAdd = (e) => {
+        e.preventDefault();
+        const id = e.target.id.value;
+        const name = e.target.name.value;
+        const user = { id, name }
+        console.log(user);
+
+        fetch('http://localhost:5000/users',{
+        method: 'POST',
+        headers: {
+            'content-type' : 'application/json'
+        },
+        body: JSON.stringify(user)
+        })
+        .then(res => res.json())
+        .then(data => {
+            console.log(data)
+            const newUser = [...users, data]
+            setUsers(newUser)
+            form.reset();
+        })
+    }
